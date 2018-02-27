@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2016 Nishant Srivastava
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package github.nisrulz.projectpackagehunter;
 
 import android.content.Context;
@@ -14,51 +30,58 @@ import java.util.List;
 
 class RVMainAdapter extends RecyclerView.Adapter<RVMainAdapter.ItemViewHolder> {
 
-  private List<PkgInfo> dataList;
-  private final PackageHunter packageHunter;
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
-  public RVMainAdapter(Context context, List<PkgInfo> dataList) {
-    packageHunter = new PackageHunter(context);
-    this.dataList = dataList;
-  }
+        final ImageView icon;
 
-  @Override public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final TextView txt_appname;
 
-    View view =
-        LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_item, parent, false);
+        final TextView txt_pkgname;
 
-    return new ItemViewHolder(view);
-  }
-
-  @Override public void onBindViewHolder(ItemViewHolder holder, int position) {
-    holder.txt_appname.setText(dataList.get(position).getAppName());
-    holder.txt_pkgname.setText(dataList.get(position).getPackageName());
-
-    Drawable icon = packageHunter.getIconForPkg(dataList.get(position).getPackageName());
-    holder.icon.setImageDrawable(icon);
-  }
-
-  @Override public int getItemCount() {
-    return dataList.size();
-  }
-
-  public class ItemViewHolder extends RecyclerView.ViewHolder {
-    final TextView txt_appname;
-    final TextView txt_pkgname;
-    final ImageView icon;
-
-    public ItemViewHolder(View itemView) {
-      super(itemView);
-      txt_appname = (TextView) itemView.findViewById(R.id.txtvw_appname);
-      txt_pkgname = (TextView) itemView.findViewById(R.id.txtvw_pkgname);
-      icon = (ImageView) itemView.findViewById(R.id.imgvw_icn);
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            txt_appname = (TextView) itemView.findViewById(R.id.txtvw_appname);
+            txt_pkgname = (TextView) itemView.findViewById(R.id.txtvw_pkgname);
+            icon = (ImageView) itemView.findViewById(R.id.imgvw_icn);
+        }
     }
-  }
 
-  public void updateWithNewListData(List<PkgInfo> newDataList) {
-    dataList.clear();
-    dataList = null;
-    dataList = newDataList;
-    notifyDataSetChanged();
-  }
+    private List<PkgInfo> dataList;
+
+    private final PackageHunter packageHunter;
+
+    public RVMainAdapter(Context context, List<PkgInfo> dataList) {
+        packageHunter = new PackageHunter(context);
+        this.dataList = dataList;
+    }
+
+    @Override
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_main_item, parent, false);
+
+        return new ItemViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
+        holder.txt_appname.setText(dataList.get(position).getAppName());
+        holder.txt_pkgname.setText(dataList.get(position).getPackageName());
+
+        Drawable icon = packageHunter.getIconForPkg(dataList.get(position).getPackageName());
+        holder.icon.setImageDrawable(icon);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataList.size();
+    }
+
+    public void updateWithNewListData(List<PkgInfo> newDataList) {
+        dataList.clear();
+        dataList = null;
+        dataList = newDataList;
+        notifyDataSetChanged();
+    }
 }

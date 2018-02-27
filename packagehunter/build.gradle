@@ -15,17 +15,16 @@
  */
 
 apply plugin: 'com.android.library'
-//apply from: 'https://raw.github.com/nisrulz/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 24
-        versionCode 2
-        versionName "1.1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.libVersionCode
+        versionName rootProject.ext.libVersionName
     }
     buildTypes {
         release {
@@ -36,15 +35,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 }
 
-// Place this in the 'build.gradle' of the library module
-// Task : Generate a JAR
-// Usage : In the terminal, run './gradlew jar'
-// Output : Get the jar at 'build/libs'
-
-task jar(type: Jar, dependsOn: 'assembleRelease') {
-    from fileTree(dir: 'build/intermediates/classes/release')
-}
+apply from: 'https://raw.githubusercontent.com/nisrulz/JCenter/master/nishant-config.gradle'
